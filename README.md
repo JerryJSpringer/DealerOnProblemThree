@@ -2,7 +2,7 @@
 ## Approach
 The problems given could be broken down into three distinct sub-problems.
 
-1. [Distance of a given route](#distance-route)
+1. [Distance of a given route](#distance-of-route)
 2. [Number of routes between two points](#number-of-routes)
 3. [Shortest route between two points](#shortest-route)
 
