@@ -62,8 +62,6 @@ namespace DealerOnProblemThree.Graph
 			stack.Push(new Node
 			{
 				Id = start,
-				Distance = 0,
-				Stops = 0
 			});
 
 			do
@@ -79,7 +77,7 @@ namespace DealerOnProblemThree.Graph
 					{
 						Id = item.Key,
 						Distance = current.Distance + item.Value,
-						Stops = current.Stops + 1
+						Depth = current.Depth + 1
 					};
 
 					// If the node path is still acceptable push new node
@@ -93,6 +91,85 @@ namespace DealerOnProblemThree.Graph
 			} while (stack.Count() != 0); // There are no canidate routes left
 
 			return routes.ToString();
+		}
+
+
+		public string FindShortestRoute(char start, char end)
+		{	
+			// Setup open and closed lists
+			var open = new Dictionary<char, bool>();
+			var closed = new Dictionary<char, bool>();
+
+			// Setup queue and map of nodes
+			var queue = new PriorityQueue<Node>();
+			var map = new Dictionary<char, Node>
+			{
+				{ start, new Node() { Id = start } }
+			};
+			queue.Add(map[start]);
+			open[start] = true;
+			closed[start] = false;
+
+			// Will be the current node in the algo
+			Node current;
+
+			// While there are paths to consider
+			while (queue.Size != 0)
+			{
+				// Get the least ranked node
+				current = queue.Remove();
+
+				// Adds the current to closed
+				if (!closed.ContainsKey(current.Id))
+					closed.Add(current.Id, true);
+
+				// Iterate through all the neighboring nodes
+				foreach(var item in _graph[current.Id])
+				{
+					// If we are at the goal then break
+					// This is in edge loop to enable same
+					// start and end values (not normal in A*)
+					if (item.Key == end)
+						return (current.Distance + item.Value).ToString();
+
+					// The node has already been reached
+					if (open.ContainsKey(item.Key) && !open[item.Key])
+						continue;
+
+					// Calculates the cost to move to the node
+					int distance = current.Distance + item.Value;
+
+					// Make the node and add it to the map if needed
+					Node neighbor;
+					if (!map.ContainsKey(item.Key))
+					{
+						neighbor = new Node() { Id = item.Key };
+						map.Add(item.Key, neighbor);
+						open[item.Key] = false;
+						closed[item.Key] = false;
+					} else
+					{
+						neighbor = map[item.Key];
+					}
+
+					// New path is better than old path
+					if (distance < neighbor.Distance && open[neighbor.Id])
+						open[neighbor.Id] = false;
+
+					// Node is not in open or closed and therfore
+					// Has not been considered and could be part of path
+					if (!open[neighbor.Id] && !closed[neighbor.Id])
+					{
+						neighbor.Distance = distance;
+						neighbor.Heuristic = 0;
+						queue.Add(neighbor);
+						open[neighbor.Id] = true;
+					}
+				}
+			}
+
+			// No availiable path
+			return "NO SUCH ROUTE";
 		}
 	}
 }

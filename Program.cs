@@ -21,19 +21,29 @@ namespace DealerOnProblemThree
 
 			// Go through all routes
 			foreach (var route in routes)
-				graph.AddEdge(route[0], route[1], (int)(route[2]-'0'));
+				graph.AddEdge(route[0], route[1], route[2] - '0');
 
+			// Route distance
 			PrintAnswer(1, graph.FindRouteDistance("A-B-C"));
 			PrintAnswer(2, graph.FindRouteDistance("A-D"));
 			PrintAnswer(3, graph.FindRouteDistance("A-D-C"));
 			PrintAnswer(4, graph.FindRouteDistance("A-E-B-C-D"));
 			PrintAnswer(5, graph.FindRouteDistance("A-E-D"));
+
+			// Number of routes with max stops
 			PrintAnswer(6, graph.FindNumberOfRoutes('C', 'C', 
-				(node) => { return node.Stops <= 3; }, 
-				(node) => { return node.Stops > 3; }));
+				(node) => { return node.Depth <= 3; }, 
+				(node) => { return node.Depth > 3; }));
+			// Number of routes with exact amount of stops
 			PrintAnswer(7, graph.FindNumberOfRoutes('A', 'C',
-				(node) => { return node.Stops == 4; },
-				(node) => { return node.Stops >= 4; }));
+				(node) => { return node.Depth == 4; },
+				(node) => { return node.Depth >= 4; }));
+
+			// Shortest path
+			PrintAnswer(8, graph.FindShortestRoute('A', 'C'));
+			PrintAnswer(9, graph.FindShortestRoute('B', 'B'));
+
+			// Route with max distance
 			PrintAnswer(10, graph.FindNumberOfRoutes('C', 'C',
 				(node) => { return node.Distance < 30; },
 				(node) => { return node.Distance > 30; }));
