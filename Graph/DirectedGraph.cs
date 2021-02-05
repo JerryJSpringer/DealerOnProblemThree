@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DealerOnProblemThree.Graph
@@ -47,6 +48,51 @@ namespace DealerOnProblemThree.Graph
 			}
 
 			return distance.ToString();
+		}
+
+		public string FindNumberOfRoutes(char start, char end, Func<Node, bool> accept, Func<Node, bool> reject)
+		{
+			// The amount of routes found
+			int routes = 0;
+
+			// Stack of canidate routes
+			var stack = new Stack<Node>();
+
+			// Push the first node on
+			stack.Push(new Node
+			{
+				Id = start,
+				Distance = 0,
+				Stops = 0
+			});
+
+			do
+			{
+				// Get the next item on the stack
+				var current = stack.Pop();
+
+				// For each adjacent node add to stack
+				foreach (var item in _graph[current.Id])
+				{
+					// Creates a new node
+					var node = new Node
+					{
+						Id = item.Key,
+						Distance = current.Distance + item.Value,
+						Stops = current.Stops + 1
+					};
+
+					// If the node path is still acceptable push new node
+					if (!reject(node))
+						stack.Push(node);
+					
+					// If the route is at the end and acceptable increment routes
+					if (node.Id == end && accept(node))
+						routes++;
+				}
+			} while (stack.Count() != 0); // There are no canidate routes left
+
+			return routes.ToString();
 		}
 	}
 }
