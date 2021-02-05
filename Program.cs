@@ -28,6 +28,15 @@ namespace DealerOnProblemThree
 			PrintAnswer(3, graph.FindRouteDistance("A-D-C"));
 			PrintAnswer(4, graph.FindRouteDistance("A-E-B-C-D"));
 			PrintAnswer(5, graph.FindRouteDistance("A-E-D"));
+			PrintAnswer(6, graph.FindNumberOfRoutes('C', 'C', 
+				(node) => { return node.Stops <= 3; }, 
+				(node) => { return node.Stops > 3; }));
+			PrintAnswer(7, graph.FindNumberOfRoutes('A', 'C',
+				(node) => { return node.Stops == 4; },
+				(node) => { return node.Stops >= 4; }));
+			PrintAnswer(10, graph.FindNumberOfRoutes('C', 'C',
+				(node) => { return node.Distance < 30; },
+				(node) => { return node.Distance > 30; }));
 		}
 
 		private static void PrintAnswer(int problem, string value)
