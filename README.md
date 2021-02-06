@@ -6,6 +6,33 @@ The problems given could be broken down into three distinct sub-problems.
 2. [Number of routes between two points](#number-of-routes)
 3. [Shortest route between two points](#shortest-route)
 
+## Input
+This program takes user input through both file and console input. The file 'Problem.txt' located in the data folder contains edges in the first line followed by multiple instructions. For example the 'Problem.txt' for the problem directly given in Problem #3 is as follows below.
+
+```
+AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
+distance A-B-C
+distance A-D
+distance A-D-C
+distance A-E-B-C-D
+distance A-E-D
+stops-max C C 3
+stops-exact A C 4
+shortest A C
+shortest B B
+stops-distance C C 30
+```
+After the 'Problem.txt' has been run (or contains no text or is not found) then the user is able to directly enter text through the console. The instructions are outlined as follows.
+
+```
+1. distance A-B-C: Finds distance of the route
+2. stops-max A B #: Finds number of routes from A to B with maximum # stops
+3. stops-exact A B #: Finds number of routes from A to B with exactly # stops
+4. stops-distance A B #: Finds number of routes from A to B with less than # distance traveled
+5. shortest A B: Finds shortest route from A to B
+6. add-edge A B #: Adds an edge from A to B with distance #
+```
+
 ## Graph Implementation
 My implementation was based off of standard adjacency list implementation for a graph. The one major change I made was to use a dictionary instead of some type of list. The reason for this was that I wanted to be able to make the graph without knowing the total amount of nodes, while still maintaining good insertion and read times. As a result this implementation can use any singular character for a node in the graph and could be easily modified to take strings which would be useful if this code was ever used in an application.
 
