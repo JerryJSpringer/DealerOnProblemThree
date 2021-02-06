@@ -8,6 +8,7 @@ namespace DealerOnProblemThree.Graph
 	public class Node : IComparable
 	{
 		public char Id { get; set; }
+		public Node Parent { get; set; }
 		public int Distance { get; set; }
 		public int Heuristic { get; set; }
 		public int Depth { get; set; }
