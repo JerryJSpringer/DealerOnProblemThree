@@ -49,6 +49,11 @@ namespace DealerOnProblemThree
 				(node) => { return node.Distance > 30; }));
 		}
 
+		/// <summary>
+		/// Prints the answer using the problem number and answer output.
+		/// </summary>
+		/// <param name="problem">The problem number.</param>
+		/// <param name="value">The answer to the problem.</param>
 		private static void PrintAnswer(int problem, string value)
 		{
 			Console.WriteLine("Output #" + problem + ": " + value);

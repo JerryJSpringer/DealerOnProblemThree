@@ -4,15 +4,31 @@ using System.Linq;
 
 namespace DealerOnProblemThree.Graph
 {
+	/// <summary>
+	/// Directed graph that can find the distance of a path, the number
+	/// of paths between two points, and the shortest distance between
+	/// two points.
+	/// </summary>
 	public class DirectedGraph
 	{
+		private static readonly string NO_ROUTE = "NO SUCH ROUTE";
+
 		private readonly Dictionary<char, Dictionary<char, int>> _graph;
 
+		/// <summary>
+		/// Creates a new directed graph.
+		/// </summary>
 		public DirectedGraph()
 		{
 			_graph = new Dictionary<char, Dictionary<char, int>>();
 		}
 
+		/// <summary>
+		/// Adds an edge to the graph with a weight.
+		/// </summary>
+		/// <param name="start">The starting node.</param>
+		/// <param name="end">The ending node.</param>
+		/// <param name="weight">The weight of the edge.</param>
 		public void AddEdge(char start, char end, int weight)
 		{
 			// Checks if the node exists and creates it if necessary
@@ -23,6 +39,13 @@ namespace DealerOnProblemThree.Graph
 			_graph[start].Add(end, weight);
 		}
 
+		/// <summary>
+		/// Finds the distance of a route of form "A-B-C" where there
+		/// can be any number of elements and returns that there is no
+		/// route if any node is not in the graph.
+		/// </summary>
+		/// <param name="route">Route of the form "A-B-C".</param>
+		/// <returns>The length of the route if possilbe else no path found.</returns>
 		public string FindRouteDistance(string route)
 		{
 			// Distance traveled
@@ -32,6 +55,9 @@ namespace DealerOnProblemThree.Graph
 			char[] stops = route.ToUpper().ToCharArray().Where(c => c != '-').ToArray();
 			char current = stops[0];
 
+			if (!_graph.ContainsKey(current))
+				return NO_ROUTE;
+
 			// Iterate through the stops
 			for (int i = 1; i < stops.Length; i++)
 			{
@@ -39,8 +65,8 @@ namespace DealerOnProblemThree.Graph
 				char next = stops[i];
 
 				// Checks if the current stop or the edge to the next stop exist
-				if (!_graph.ContainsKey(current) || !_graph[current].ContainsKey(next))
-					return "NO SUCH ROUTE";
+				if (!_graph[current].ContainsKey(next))
+					return NO_ROUTE;
 
 				// Adds to distance traveled and updates current location
 				distance += _graph[current][next];
@@ -50,8 +76,21 @@ namespace DealerOnProblemThree.Graph
 			return distance.ToString();
 		}
 
+		/// <summary>
+		/// Finds the number of routes between two points in the graph. Conditions
+		/// need to be specified for whether the route should be accepted or rejected.
+		/// </summary>
+		/// <param name="start">The starting node.</param>
+		/// <param name="end">The ending node.</param>
+		/// <param name="accept">Conditions for a solution beind accepted.</param>
+		/// <param name="reject">Conditions for a solution being rejected.</param>
+		/// <returns></returns>
 		public string FindNumberOfRoutes(char start, char end, Func<Node, bool> accept, Func<Node, bool> reject)
 		{
+			// Check for invalid route
+			if (!_graph.ContainsKey(start) || !_graph.ContainsKey(end))
+				return NO_ROUTE;
+
 			// The amount of routes found
 			int routes = 0;
 
@@ -93,9 +132,18 @@ namespace DealerOnProblemThree.Graph
 			return routes.ToString();
 		}
 
-
+		/// <summary>
+		/// Finds the shortest route between two points using an implementation of A*.
+		/// </summary>
+		/// <param name="start">The starting node.</param>
+		/// <param name="end">The ending node.</param>
+		/// <returns>The length of the shortest route or no path available.</returns>
 		public string FindShortestRoute(char start, char end)
-		{	
+		{
+			// Check for invalid route
+			if (!_graph.ContainsKey(start) || !_graph.ContainsKey(end))
+				return NO_ROUTE;
+
 			// Setup open and closed lists
 			var open = new Dictionary<char, bool>();
 			var closed = new Dictionary<char, bool>();
@@ -169,7 +217,7 @@ namespace DealerOnProblemThree.Graph
 			}
 
 			// No availiable path
-			return "NO SUCH ROUTE";
+			return NO_ROUTE;
 		}
 	}
 }
