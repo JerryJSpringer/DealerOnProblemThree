@@ -21,32 +21,40 @@ namespace DealerOnProblemThree
 		/// </summary>
 		static void Main()
 		{
+			// Make the graph
+			var graph = new DirectedGraph();
+
 			// Gets problem.txt from the parent directory
 			string path = Path.Combine(
 				Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, 
 				@"Data\Problem.txt");
-			string[] files = File.ReadAllLines(path);
+			string[] files = null;
 
-			// Strip all whitespace from the string
-			string input = new string(files[0].ToCharArray()
-				.Where(c => !char.IsWhiteSpace(c))
-				.ToArray());
+			try {
+				files = File.ReadAllLines(path);
+			} catch (FileNotFoundException) {
+				Console.WriteLine("No file found moving directly to user input.");
+			}
 
-			// Split the string into individual routes
-			string[] routes = input.Split(',');
+			if (files != null && files.Length > 0) {
+				// Strip all whitespace from the string
+				string input = new string(files[0].ToCharArray()
+					.Where(c => !char.IsWhiteSpace(c))
+					.ToArray());
 
-			// Make the graph
-			var graph = new DirectedGraph();
+				// Split the string into individual routes
+				string[] routes = input.Split(',');
 
-			// Go through all routes
-			foreach (var route in routes)
-				graph.AddEdge(route[0], route[1], int.Parse(route.Substring(2)));
+				// Go through all routes
+				foreach (var route in routes)
+					graph.AddEdge(route[0], route[1], int.Parse(route.Substring(2)));
 
-			// Parses all problems in the file
-			for (int i = 1; i < files.Length; i++)
-				ParseProblem(files[i], graph);
+				// Parses all problems in the file
+				for (int i = 1; i < files.Length; i++)
+					ParseProblem(files[i], graph);
+			}
 
-			Console.WriteLine("\nType 'quit' to exit and 'h' for help");
+			Console.WriteLine("Type 'quit' to exit and 'h' for help");
 
 			// Read file input
 			string line = "";
@@ -64,7 +72,7 @@ namespace DealerOnProblemThree
 		/// 5. shortest A B: Finds shortest route from A to B
 		/// 
 		/// Additionally edges can be added to the graph if needed as follows.
-		/// 7. add-edge A B #: Adds an edge from A to B with distance #
+		/// 6. add-edge A B #: Adds an edge from A to B with distance #
 		/// </summary>
 		/// <param name="line">A line containing a directed graph problem.</param>
 		/// <param name="graph">The graph that is the problem domain.</param>
