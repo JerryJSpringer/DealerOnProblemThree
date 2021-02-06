@@ -34,7 +34,7 @@ After the 'Problem.txt' has been run (or contains no text or is not found) then 
 ```
 
 ## Graph Implementation
-My implementation was based off of standard adjacency list implementation for a graph. The one major change I made was to use a dictionary instead of some type of list. The reason for this was that I wanted to be able to make the graph without knowing the total amount of nodes, while still maintaining good insertion and read times. As a result this implementation can use any singular character for a node in the graph and could be easily modified to take strings which would be useful if this code was ever used in an application.
+My implementation was based on a standard adjacency list implementation for a graph. The one major change I made was to use a dictionary instead of some type of list. The reason for this was that I wanted to be able to make the graph without knowing the total amount of nodes, while still maintaining good insertion and read times. As a result this implementation can use any singular character for a node in the graph and could be easily modified to take strings which would be useful if this code was ever used in an application.
 
 ## Distance of given route (1-5) <a name="distance-of-route"></a>
 The simplest of the three sub-problems that was solved by checking to see if the next value was valid, and if it was adding the value to the distance. If the next stop in the route was ever not valid we would simply return that no routes were found.
