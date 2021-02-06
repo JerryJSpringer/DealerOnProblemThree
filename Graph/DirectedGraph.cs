@@ -160,7 +160,7 @@ namespace DealerOnProblemThree.Graph
 				{ start, new Node() { Id = start } }
 			};
 			queue.Add(map[start]);
-			open[start] = true;
+			open[start] = false;
 			closed[start] = false;
 
 			// Will be the current node in the algo
@@ -179,16 +179,6 @@ namespace DealerOnProblemThree.Graph
 				// Iterate through all the neighboring nodes
 				foreach(var item in _graph[current.Id])
 				{
-					// If we are at the goal then break
-					// This is in edge loop to enable same
-					// start and end values (not normal in A*)
-					if (item.Key == end)
-						return (current.Distance + item.Value).ToString();
-
-					// The node has already been reached
-					if (open.ContainsKey(item.Key) && !open[item.Key])
-						continue;
-
 					// Calculates the cost to move to the node
 					int distance = current.Distance + item.Value;
 
@@ -215,14 +205,19 @@ namespace DealerOnProblemThree.Graph
 					{
 						neighbor.Distance = distance;
 						neighbor.Heuristic = 0;
+						neighbor.Parent = current;
 						queue.Add(neighbor);
 						open[neighbor.Id] = true;
 					}
 				}
 			}
 
-			// No availiable path
-			return NO_ROUTE;
+			// Return shortest distance if the route exists
+			Node newNode = map[end];
+			if (map[end].Parent != null)
+				return map[end].Distance.ToString();
+			else
+				return NO_ROUTE;
 		}
 	}
 }
