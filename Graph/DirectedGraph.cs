@@ -213,7 +213,6 @@ namespace DealerOnProblemThree.Graph
 			}
 
 			// Return shortest distance if the route exists
-			Node newNode = map[end];
 			if (map[end].Parent != null)
 				return map[end].Distance.ToString();
 			else
