@@ -34,9 +34,14 @@ namespace DealerOnProblemThree.Graph
 			// Checks if the node exists and creates it if necessary
 			if (!_graph.ContainsKey(start))
 				_graph.Add(start, new Dictionary<char, int>());
+			if (!_graph.ContainsKey(end))
+				_graph.Add(end, new Dictionary<char, int>());
 
 			// Add edge from start to end with given weight
-			_graph[start].Add(end, weight);
+			if (_graph[start].ContainsKey(end))
+				_graph[start][end] = weight;
+			else
+				_graph[start].Add(end, weight);
 		}
 
 		/// <summary>
